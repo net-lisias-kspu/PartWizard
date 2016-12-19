@@ -80,6 +80,17 @@ namespace PartWizard
         public static readonly Color HighlightColorBuyablePart = Color.white;
         public static readonly Color HighlightColorActionEditorTarget = XKCDColors.Blue;
 
+
+        public static readonly Color GoodFuelLineColor = XKCDColors.Amethyst;
+        public static readonly Color BadFuelLineColor = XKCDColors.Amethyst;
+        public static readonly Color GoodStrutColor = XKCDColors.OffWhite;
+        public static readonly Color BadStrutColor = XKCDColors.OffWhite;
+
+        public static readonly Color EdgeGoodFuelLineColor = new Color(1, 1, 0.0784313f);
+        public static readonly Color EdgeBadFuelLineColor = new Color(1, 0.5058824f, 0.7529412f);
+        public static readonly Color EdgeGoodStrutColor = new Color(1, 1, 0.8941177f);
+        public static readonly Color EdgeBadStrutColor = new Color(0, 0, 1);
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static Configuration()
         {

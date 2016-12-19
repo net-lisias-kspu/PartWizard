@@ -143,6 +143,8 @@ namespace PartWizard
 
         public void Add(Part part, Color color, bool recursive)
         {
+            bool tracked= false;
+
             if(!tracking)
                 throw new HighlightTrackerException("Highlight tracking must be started before adding parts to track.");
 
@@ -159,12 +161,14 @@ namespace PartWizard
 
             if(!this.Parts.ContainsKey(part) && this.PreviousParts.ContainsKey(part))
             {
+                tracked = true;
                 // This part was previously tracked, so move it to the current set.
                 HighlightTracker2.Transfer(part, this.PreviousParts, this.Parts);
             }
 
             if(!this.Parts.ContainsKey(part) && !this.PreviousParts.ContainsKey(part))
             {
+
                 // This part wasn't previously tracked by this instance. Look for it in the master set and move it to the current set if found.
 
                 bool found = false;
@@ -201,8 +205,8 @@ namespace PartWizard
 
             // The part should be in the current set by this point.
             Log.Assert(this.Parts.ContainsKey(part));
-
-            HighlightTracker2.Modify(part, color, recursive);
+            if (!tracked)
+                HighlightTracker2.Modify(part, color, recursive);
         }
 
         public void Add(Part part, Color color)
@@ -279,16 +283,70 @@ namespace PartWizard
             this.Parts.Clear();
             this.PreviousParts.Clear();
         }
-
+        
         private static void Modify(Part part, Color color, bool recursive)
         {
-            // Update the part with the requested settings.
-            part.SetHighlightColor(color);
-            part.SetHighlight(true, recursive);
-            
-            Highlighter highlighter = part.highlighter;
-            part.highlighter.SeeThroughOn();
-            part.highlighter.ConstantOn(color);
+            //
+            // Special code for fuel lines and struts
+            //
+            if (part is CompoundPart)
+            {
+                var p = part as CompoundPart;
+
+                p.SetHighlightDefault();
+                p.SetHighlightType(Part.HighlightType.AlwaysOn);
+                p.SetHighlight(true, recursive);
+                
+                Color highlightC = XKCDColors.White, 
+                    edgeHighlightColor = XKCDColors.White;
+
+
+                switch (p.name)
+                {
+                    case "fuelLine":
+                        if (p.attachState == CompoundPart.AttachState.Detached || p.attachState == CompoundPart.AttachState.Attaching || p.target == p.parent)
+                        {
+                            highlightC = Configuration.BadFuelLineColor;
+                            edgeHighlightColor = Configuration.EdgeBadFuelLineColor;
+                        }
+                        else
+                        {
+                            highlightC = Configuration.GoodFuelLineColor;
+                            edgeHighlightColor = Configuration.EdgeGoodFuelLineColor;
+                        }
+                        break;
+
+                    case "strutConnector":                    
+                        if (p.attachState == CompoundPart.AttachState.Detached || p.attachState == CompoundPart.AttachState.Attaching || p.target == p.parent)
+                        {
+                            highlightC = Configuration.BadStrutColor;
+                            edgeHighlightColor = Configuration.EdgeBadStrutColor;
+                        }
+                        else
+                        {
+                            highlightC = Configuration.GoodStrutColor;
+                            edgeHighlightColor = Configuration.EdgeGoodStrutColor;
+                        }
+
+                        break;
+                }
+                p.SetHighlightColor(highlightC);
+                p.highlighter.ConstantOn(edgeHighlightColor);
+                p.highlighter.SeeThroughOn();
+            }
+            else
+            {
+                part.SetHighlightDefault();
+                part.SetHighlightType(Part.HighlightType.AlwaysOn);
+
+                // Update the part with the requested settings.
+                part.SetHighlightColor(color);
+                part.SetHighlight(true, recursive);
+
+                Highlighter highlighter = part.highlighter;
+                part.highlighter.SeeThroughOn();
+                part.highlighter.ConstantOn(color);
+            }
         }
 
         private static void Restore(Dictionary<Part, bool> parts)
