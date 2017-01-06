@@ -176,7 +176,7 @@ namespace PartWizard
             this.symmetryEditorWindow = new SymmetryEditorWindow();
 
             this.highlight = new HighlightTracker2();
-
+            
             for(int index = 0; index < this.visibleCategories.Length; index++)
             {
                 this.visibleCategories[index] = true;
@@ -288,7 +288,7 @@ namespace PartWizard
 
                 List<Part> buyableParts = null;
 
-                if(this.viewType == ViewType.Hidden)
+                if (this.viewType == ViewType.Hidden)
                 {
                     parts = parts.FindAll((p) => { return p.partInfo.category == PartCategories.none; });
                 }
@@ -353,7 +353,8 @@ namespace PartWizard
 
                     for(PartCategories partCategories = PartCategories.Propulsion; partCategories < PartCategories.Coupling; partCategories++)
                     {
-                        visibleCategories[(int)partCategories] = GUILayout.Toggle(visibleCategories[(int)partCategories], partCategories.ToString(), toggleStyle);
+                        // Need to add one to the PartCategories because "none" is a -1, and some parts have a category = none
+                        visibleCategories[(int)partCategories] = GUILayout.Toggle(visibleCategories[(int)partCategories + 1], partCategories.ToString(), toggleStyle);
                     }
                 }
                 else if(this.viewType == ViewType.Resources)
@@ -383,13 +384,14 @@ namespace PartWizard
                 }
                 else
                 {
-                    foreach(Part part in parts)
+
+                    foreach (Part part in parts)
                     {
                         // Reset part name label color to default; some conditions may change the color to indicate various things.
                         labelStyle.normal.textColor = PartWizardWindow.DefaultPartNameColor;
-
                         // Check if this part's category is currently visible.
-                        if(visibleCategories[(int)part.partInfo.category])
+                        // Need to add one to the PartCategories because "none" is a -1, and some parts have a category = none
+                        if (visibleCategories[(int)part.partInfo.category + 1])
                         {
                             // The part's category is visible, now check resource conditions to determine final visibility.
                             bool partVisible = false;
@@ -409,7 +411,6 @@ namespace PartWizard
                                     }
                                 }
                             }
-
                             if(partVisible)
                             {
                                 totalEntryCost += part.partInfo.entryCost;
