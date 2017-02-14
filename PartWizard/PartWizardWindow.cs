@@ -354,7 +354,7 @@ namespace PartWizard
                     for(PartCategories partCategories = PartCategories.Propulsion; partCategories < PartCategories.Coupling; partCategories++)
                     {
                         // Need to add one to the PartCategories because "none" is a -1, and some parts have a category = none
-                        visibleCategories[(int)partCategories] = GUILayout.Toggle(visibleCategories[(int)partCategories + 1], partCategories.ToString(), toggleStyle);
+                        visibleCategories[(int)partCategories + 1] = GUILayout.Toggle(visibleCategories[(int)partCategories + 1], partCategories.ToString(), toggleStyle);
                     }
                 }
                 else if(this.viewType == ViewType.Resources)
