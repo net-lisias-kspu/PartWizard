@@ -1,5 +1,6 @@
 ﻿{
-  "NAME": "PartWizard",
+  "NAME": "PartWizardContinued",
+  "URL": "http://ksp-avc.cybutek.net/version.php?id=442",
   "VERSION": {
     "MAJOR": 1,
     "MINOR": 3,
@@ -14,7 +15,7 @@
   "KSP_VERSION_MIN": {
     "MAJOR": 1,
     "MINOR": 2,
-    "PATCH": 2
+    "PATCH": 0
   },
   "KSP_VERSION_MAX": {
     "MAJOR": 1,
