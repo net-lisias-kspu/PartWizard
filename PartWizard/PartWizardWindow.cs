@@ -61,8 +61,8 @@ namespace PartWizard
 
         private ViewType viewType = ViewType.All;
 
-        private bool[] visibleCategories = new bool[Enum.GetNames(typeof(PartCategories)).Length];
-
+        private bool[] visibleCategories = new bool[Enum.GetNames(typeof(PartCategories)).Length + 1];
+        
         private class ResourceInfo
         {
             private int partCount;
