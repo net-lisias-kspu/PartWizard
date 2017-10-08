@@ -1,24 +1,7 @@
 ﻿Part Wizard Continued for KSP
 Version 1.3.0.0
 
-http://forum.kerbalspaceprogram.com/index.php?/topic/154466-12-part-wizard-continued
 
-This version is released by Linuxgurugamer, following the license in the original mod.
-
-Changes
-1.3.0
-	- Updated for 1.2.2
-	- Added special colors for fuel lines and struts
-	- Added code to not constantly update the highlighting
-1.3.1
-	Fixed issue where parts with category = "none" was causing a nullref
-
-1.3.2
-	Fixed problem where individual categories couldn't be selected or deselected
-	Added part wizard to ksp-avc site
-
-1.3.3
-	Fixed issue where too many partcategories could cause an index error
 
 ===================================================================================
 Original text below from the original mod

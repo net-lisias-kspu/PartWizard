@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BC8E4B6D-0FF1-4E3B-AFFE-9BACE9482617}"
 	ProjectSection(SolutionItems) = preProject
 		buildRelease.bat = buildRelease.bat
+		Changelog.txt = Changelog.txt
 		deploy.bat = deploy.bat
 		PartWizard\PartWizard.version = PartWizard\PartWizard.version
 		README = README

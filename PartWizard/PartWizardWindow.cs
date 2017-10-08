@@ -35,7 +35,7 @@ namespace PartWizard
 {
     internal sealed class PartWizardWindow : GUIWindow
     {
-        private static readonly Rect DefaultDimensions = new Rect(280, 160, 300, 475);
+        private static readonly Rect DefaultDimensions = new Rect(280, 160, 400, 475);
         private static readonly Rect MinimumDimensions = new Rect(0, 0, DefaultDimensions.width, DefaultDimensions.height);
 
         private readonly Color TooltipLabelColor = Color.yellow;
@@ -61,6 +61,7 @@ namespace PartWizard
 
         private ViewType viewType = ViewType.All;
 
+ 
         private bool[] visibleCategories = new bool[Enum.GetNames(typeof(PartCategories)).Length + 1];
         
         private class ResourceInfo
@@ -85,6 +86,15 @@ namespace PartWizard
         private GUIStyle actionEditorModePartButtonStyle;
 
         private GUIContent[] viewTypeContents;
+
+        private enum SortBy
+        {
+            Name = 0,
+            StageAsc = 1,
+            StageDesc = 2
+        }
+        private SortBy sortBy = SortBy.Name;
+        private GUIContent[] sortTypeContents = new GUIContent[] { new GUIContent("Name"), new GUIContent("Stage Ascending"), new GUIContent("Stage Descending") };
 
         private GUIStyle labelStyle;
         private GUIStyle toggleStyle;
@@ -281,9 +291,12 @@ namespace PartWizard
                 #region Display Mode Control
 
                 GUILayout.BeginHorizontal();
-
                 this.viewType = (ViewType)GUIControls.HorizontalToggleSet((int)this.viewType, this.viewTypeContents, this.selectedViewTypeStyle, this.unselectedViewTypeStyle);
+                GUILayout.EndHorizontal();
 
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Sort by:");
+                this.sortBy = (SortBy)GUIControls.HorizontalToggleSet((int)this.sortBy, this.sortTypeContents, this.selectedViewTypeStyle, this.unselectedViewTypeStyle);
                 GUILayout.EndHorizontal();
 
                 List<Part> buyableParts = null;
@@ -324,7 +337,27 @@ namespace PartWizard
                 }
 
                 #endregion
-
+                if (parts != null && parts.Count > 0)
+                {
+                    switch (sortBy)
+                    {
+                        case SortBy.Name:
+                            parts.Sort((p, q) => p.partInfo.title.CompareTo(q.partInfo.title));
+                            break;
+                        case SortBy.StageAsc:
+                            if (this.viewType != ViewType.Unavailable)
+                                parts.Sort((p, q) => p.inverseStage.CompareTo(q.inverseStage));
+                            else
+                                parts.Sort((p, q) => p.partInfo.title.CompareTo(q.partInfo.title));
+                            break;
+                        case SortBy.StageDesc:
+                            if (this.viewType != ViewType.Unavailable)
+                                parts.Sort((q, p) => p.inverseStage.CompareTo(q.inverseStage));
+                            else
+                                parts.Sort((p, q) => p.partInfo.title.CompareTo(q.partInfo.title));
+                            break;
+                    }
+                }
                 #region Part List
 
                 GUILayout.BeginVertical(GUIControls.PanelStyle);
@@ -333,8 +366,11 @@ namespace PartWizard
 
                 int totalEntryCost = 0;
                 int visiblePartCount = 0;
+                int lastStage = 0;
+                if (parts != null && parts.Count > 0)
+                    lastStage = parts[0].inverseStage;
 
-                if(this.viewType == ViewType.Category)
+                if (this.viewType == ViewType.Category)
                 {
                     if(GUILayout.Button(Localized.ViewAll))
                     {
@@ -413,6 +449,7 @@ namespace PartWizard
                             }
                             if(partVisible)
                             {
+                               
                                 totalEntryCost += part.partInfo.entryCost;
                                 visiblePartCount++;
 
@@ -422,7 +459,13 @@ namespace PartWizard
 
                                 #region Part Label
 
-                                if(EditorLogic.fetch.editorScreen != EditorScreen.Actions)
+                                if (sortBy == SortBy.StageAsc || sortBy == SortBy.StageDesc)
+                                {
+                                    if (lastStage != part.inverseStage)
+                                        lastStage = part.inverseStage;
+                                    GUILayout.Label(lastStage.ToString() + ": ");                                    
+                                }
+                                if (EditorLogic.fetch.editorScreen != EditorScreen.Actions)
                                 {                                    
                                     // Check compound parts for integrity.
                                     if(part is CompoundPart)
@@ -433,7 +476,7 @@ namespace PartWizard
                                             labelStyle.normal.textColor = Color.red;
                                         }
                                     }
-
+                                    labelStyle.fixedWidth = 250;
                                     GUILayout.Label(new GUIContent(part.partInfo.title, part.partInfo.name), labelStyle);
                                 }
                                 else
