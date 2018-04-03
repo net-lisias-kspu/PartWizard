@@ -30,6 +30,8 @@ using System.IO;
 
 using UnityEngine;
 
+using ClickThroughFix;
+
 using Localized = PartWizard.Resources.Strings;
 
 namespace PartWizard
@@ -233,7 +235,7 @@ namespace PartWizard
                 {
                     GUI.skin.window.clipping = TextClipping.Clip;
 
-                    this.window = GUILayout.Window(this.windowId, this.window, this.InternalRender, this.title);
+                    this.window = ClickThruBlocker.GUILayoutWindow(this.windowId, this.window, this.InternalRender, this.title);
 
                     foreach(GUIWindow child in this.children)
                     {

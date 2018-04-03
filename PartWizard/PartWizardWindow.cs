@@ -277,18 +277,24 @@ namespace PartWizard
 
                 GUILayout.BeginVertical();
 
+#if false
                 // If Blizzy's toolbar is available, give the user the option to pick the stock toolbar.
                 if(ToolbarManager.ToolbarAvailable)
+#endif
                 {
-                    bool stockToolbar = PartWizardPlugin.ToolbarIsStock;
-                    stockToolbar = GUILayout.Toggle(stockToolbar, Localized.UseStockToolbar, GUILayout.Width(200));
+                    //bool stockToolbar = PartWizardPlugin.ToolbarIsStock;
+                    bool stockToolbar = GUILayout.Toggle(PartWizardPlugin.ToolbarIsStock, Localized.UseStockToolbar, GUILayout.Width(200));
                     if(stockToolbar != PartWizardPlugin.ToolbarIsStock)
                     {
+#if false
                         PartWizardPlugin.ToolbarTypeToggleActive = true;
+#endif
+                        PartWizardPlugin.ToolbarIsStock = stockToolbar;
+                        PartWizardPlugin.Instance.SaveToolbarConfiguration();
                     }
                 }
 
-                #region Display Mode Control
+#region Display Mode Control
 
                 GUILayout.BeginHorizontal();
                 this.viewType = (ViewType)GUIControls.HorizontalToggleSet((int)this.viewType, this.viewTypeContents, this.selectedViewTypeStyle, this.unselectedViewTypeStyle);
@@ -336,7 +342,7 @@ namespace PartWizard
                     Debug.Log("total # buyable part after dup filter: " + parts.Count.ToString());
                 }
 
-                #endregion
+#endregion
                 if (parts != null && parts.Count > 0)
                 {
                     switch (sortBy)
@@ -358,7 +364,7 @@ namespace PartWizard
                             break;
                     }
                 }
-                #region Part List
+#region Part List
 
                 GUILayout.BeginVertical(GUIControls.PanelStyle);
 
@@ -457,7 +463,7 @@ namespace PartWizard
 
                                 bool actionEditorPartButtonMouseOver = false;
 
-                                #region Part Label
+#region Part Label
 
                                 if (sortBy == SortBy.StageAsc || sortBy == SortBy.StageDesc)
                                 {
@@ -480,8 +486,9 @@ namespace PartWizard
                                     GUILayout.Label(new GUIContent(part.partInfo.title, part.partInfo.name), labelStyle);
                                 }
                                 else
-                                {
-                                    if(GUIControls.MouseOverButton(new GUIContent(part.partInfo.title, part.partInfo.name), out actionEditorPartButtonMouseOver, this.actionEditorModePartButtonStyle))
+                                { 
+                                    Log.Write("EditorScreen.Actions, part: " + part.partInfo.title);
+                                    if (GUIControls.MouseOverButton(new GUIContent(part.partInfo.title, part.partInfo.name), out actionEditorPartButtonMouseOver, this.actionEditorModePartButtonStyle))
                                     {
                                         // Each part gets the EditorActionPartSelector added to it when the editor switches to the Actions screen. (And it
                                         // gets taken away when leaving that screen.)
@@ -498,7 +505,7 @@ namespace PartWizard
                                     }
                                 }
 
-                                #endregion
+#endregion
 
                                 // Adds space between the part name and the buttons (if any) associated with the part.
                                 GUILayout.FlexibleSpace();
@@ -518,7 +525,7 @@ namespace PartWizard
 
                                 if(this.viewType == ViewType.All || this.viewType == ViewType.Hidden)
                                 {
-                                    #region Break Symmetry Button
+#region Break Symmetry Button
 
                                     string breakabilityReport = default(string);
                                     GUI.enabled = EditorLogic.SelectedPart == null && EditorLogic.fetch.editorScreen == EditorScreen.Parts && PartWizard.HasBreakableSymmetry(part, out breakabilityReport);
@@ -542,9 +549,9 @@ namespace PartWizard
 
                                     breakSymmetryMouseOver &= GUI.enabled;  // Clear mouse over flag if the symmetry button was disabled.
 
-                                    #endregion
+#endregion
 
-                                    #region Delete Button
+#region Delete Button
 
                                     GUI.enabled = EditorLogic.SelectedPart == null && EditorLogic.fetch.editorScreen == EditorScreen.Parts && PartWizard.IsDeleteable(part);
 
@@ -562,11 +569,11 @@ namespace PartWizard
 
                                     deleteButtonMouseOver &= GUI.enabled;   // Clear mouse over flag if the delete button was disabled.
 
-                                    #endregion
+#endregion
                                 }
                                 else // this.viewType == ViewType.Unavailable
                                 {
-                                    #region Buy Button
+#region Buy Button
 
                                     GUI.enabled = EditorLogic.SelectedPart == null && (double)part.partInfo.entryCost <= Funding.Instance.Funds && PartWizard.IsBuyable(part);
 
@@ -584,7 +591,7 @@ namespace PartWizard
 
                                     buyButtonMouseOver &= GUI.enabled;  // Clear mouse over flag if the buy button was disabled.
 
-                                    #endregion
+#endregion
                                 }
 
                                 GUI.enabled = true;
@@ -598,7 +605,7 @@ namespace PartWizard
                                     break;
                                 }
 
-                                #region Part Highlighting Control
+#region Part Highlighting Control
 
                                 if(breakSymmetryMouseOver)
                                 {
@@ -639,6 +646,7 @@ namespace PartWizard
                                         buyableParts.ForEach((p) => {
                                             if(part.name == p.name)
                                             {
+                                                Log.Write("Highlighting 2 part: " + part.partInfo.title);
                                                 this.highlight.Add(p, Configuration.HighlightColorBuyablePart, false);
                                             }
                                         });
@@ -646,10 +654,11 @@ namespace PartWizard
                                 }
                                 else if(actionEditorPartButtonMouseOver)
                                 {
+                                    Log.Write("Highlighting part: " + part.partInfo.title);
                                     this.highlight.Add(part, Configuration.HighlightColorActionEditorTarget, Configuration.HighlightColorActionEditorTarget);
                                 }
 
-                                #endregion
+#endregion
                             }
                         }
                     }
@@ -700,9 +709,9 @@ namespace PartWizard
                     GUI.enabled = true;
                 }
 
-                #endregion
+#endregion
 
-                #region Status Area
+#region Status Area
 
                 // Push everything above this up, otherwise it will be centered vertically.
                 GUILayout.FlexibleSpace();
@@ -737,7 +746,7 @@ namespace PartWizard
                     GUILayout.Label(status, this.tooltipLabelStyle);
                 }
 
-                #endregion
+#endregion
 
                 GUILayout.EndVertical();
 
