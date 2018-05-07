@@ -40,8 +40,6 @@ namespace PartWizard
     {
         static internal PartWizardPlugin Instance;
 
-        //private IButton partWizardBlizzyButton;
-        //private ApplicationLauncherButton partWizardStockButton;
 
         ToolbarControl toolbarControl;
 
@@ -56,14 +54,13 @@ namespace PartWizard
         private const string BlizzyToolbarIconInactive = "PartWizard/Icons/partwizard_inactive_toolbar_24_icon";
         private const string StockToolbarIconActive = "PartWizard/Icons/partwizard_active_toolbar_38_icon";
         private const string StockToolbarIconInactive = "PartWizard/Icons/partwizard_inactive_toolbar_38_icon";
-        private const string KeyToolbarIsStock = "toolbarIsStock";
+
         private const string KeyToolbarIconActive = "toolbarActiveIcon";
         private const string KeyToolbarIconInactive = "toolbarInactiveIcon";
 
-#if false
-        private string toolbarIconActive;
-        private string toolbarIconInactive;
-#endif
+
+        internal const string MODID = "PartWizard_NS";
+        internal const string MODNAME = "Part Wizard";
 
         public void Awake()
         {
@@ -73,62 +70,18 @@ namespace PartWizard
                 this.partWizardWindow = new PartWizardWindow(PartWizardPlugin.Name, PartWizardPlugin.Version);
                 this.partWizardWindow.OnVisibleChanged += partWizardWindow_OnVisibleChanged;
 
-                // Are we using Blizzy's Toolbar?
-                ToolbarIsStock = Configuration.GetValue(PartWizardPlugin.KeyToolbarIsStock, false);
-
                 toolbarControl = gameObject.AddComponent<ToolbarControl>();
                 toolbarControl.AddToAllToolbars(ToggleVisibility, ToggleVisibility,
                     ApplicationLauncher.AppScenes.VAB | ApplicationLauncher.AppScenes.SPH,
-                    "PartWizardNS",
+                    MODID,
                     "partWizardButton",
                     StockToolbarIconActive,
                     StockToolbarIconInactive,
                     BlizzyToolbarIconActive,
                     BlizzyToolbarIconInactive,
-                    "Part Wizard"
+                    MODNAME
                 );
-                toolbarControl.UseBlizzy(!ToolbarIsStock);
-
-#if false
-                if (ToolbarManager.ToolbarAvailable && !ToolbarIsStock)
-                {
-                    this.toolbarIconActive = Configuration.GetValue(PartWizardPlugin.KeyToolbarIconActive, PartWizardPlugin.BlizzyToolbarIconActive);
-                    this.toolbarIconInactive = Configuration.GetValue(PartWizardPlugin.KeyToolbarIconInactive, PartWizardPlugin.BlizzyToolbarIconInactive);
-
-                    this.SaveToolbarConfiguration();
-
-                    this.partWizardBlizzyButton = ToolbarManager.Instance.add("PartWizardNS", "partWizardButton");
-                    this.partWizardBlizzyButton.ToolTip = PartWizardPlugin.Name;
-                    this.partWizardBlizzyButton.OnClick += this.partWizardButton_Click;
-                    this.partWizardBlizzyButton.Visibility = new GameScenesVisibility(GameScenes.EDITOR);
-
-                    this.UpdateToolbarIcon();
-                }
-                else
-                {
-                    // Blizzy toolbar not available, or Stock Toolbar selected Let's go stock :(
-                    ToolbarIsStock = true;
-                    GameEvents.onGUIApplicationLauncherReady.Add(OnGUIAppLauncherReady);
-                    GameEvents.onGUIApplicationLauncherDestroyed.Add(OnGUIAppLauncherDestroyed);
-
-                    this.toolbarIconActive = Configuration.GetValue(PartWizardPlugin.KeyToolbarIconActive, PartWizardPlugin.StockToolbarIconActive);
-                    this.toolbarIconInactive = Configuration.GetValue(PartWizardPlugin.KeyToolbarIconInactive, PartWizardPlugin.StockToolbarIconInactive);
-
-                    this.SaveToolbarConfiguration();
-                }
-#endif
             }
-        }
-
-        public void Start()
-        {
-#if false
-            // this is needed because of a bug in KSP with event onGUIAppLauncherReady.
-            if(ToolbarIsStock && HighLogic.LoadedSceneIsEditor)
-            {
-                OnGUIAppLauncherReady();
-            }
-#endif
         }
 
         private void partWizardWindow_OnVisibleChanged(GUIWindow window, bool visible)
@@ -139,14 +92,7 @@ namespace PartWizard
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "GUI")]
         public void OnGUI()
         {
-            if (toolbarControl != null)
-                toolbarControl.UseBlizzy(!ToolbarIsStock);
-#if false
-            if (ToolbarTypeToggleActive)
-            {
-                ToolbarTypeToggle();
-            }
-#endif
+
             if(this.partWizardWindow != null)
             {
                 this.partWizardWindow.Render();
@@ -162,24 +108,7 @@ namespace PartWizard
 
             toolbarControl.OnDestroy();
             Destroy(toolbarControl);
-#if false
-            if (ToolbarIsStock)
-            {
-                GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
-                GameEvents.onGUIApplicationLauncherDestroyed.Remove(OnGUIAppLauncherDestroyed);
 
-                if(this.partWizardStockButton != null)
-                {
-                    ApplicationLauncher.Instance.RemoveModApplication(this.partWizardStockButton);
-                    this.partWizardStockButton = null;
-                }
-            }
-            else
-            {
-                this.partWizardBlizzyButton.Destroy();
-                this.partWizardBlizzyButton = null;
-            }
-#endif
         }
 
         private void ToggleVisibility()
@@ -210,129 +139,17 @@ namespace PartWizard
                 toolbarControl.SetTexture(StockToolbarIconInactive, BlizzyToolbarIconInactive);
 
             }
-#if false
-            if (!ToolbarIsStock)
-            {
-                this.partWizardBlizzyButton.TexturePath = this.partWizardWindow.Visible ? this.toolbarIconActive : this.toolbarIconInactive;
-            }
-            else
-            {
-                this.partWizardStockButton.SetTexture((Texture)GameDatabase.Instance.GetTexture(this.partWizardWindow.Visible ? this.toolbarIconActive : this.toolbarIconInactive, false));
-            }
-#endif
         }
 
-#if false
-        private void OnGUIAppLauncherReady()
-        {
-            // Setup PW Stock Toolbar button
-            bool hidden = false;
-            if(ApplicationLauncher.Ready && (partWizardStockButton == null || !ApplicationLauncher.Instance.Contains(partWizardStockButton, out hidden)))
-            {
-                partWizardStockButton = ApplicationLauncher.Instance.AddModApplication(
-                    ToggleVisibility,
-                    ToggleVisibility,
-                    DummyHandler,
-                    DummyHandler,
-                    DummyHandler,
-                    DummyHandler,
-                    ApplicationLauncher.AppScenes.VAB | ApplicationLauncher.AppScenes.SPH,
-                    (Texture)GameDatabase.Instance.GetTexture(StockToolbarIconActive, false));
 
-                partWizardStockButton.SetTexture((Texture)GameDatabase.Instance.GetTexture(this.partWizardWindow.Visible ? this.toolbarIconActive : this.toolbarIconInactive, false));
-            }
-        }
-#endif
 
-#if false
-        private void OnGUIAppLauncherDestroyed()
-        {
-            if (toolbarControl != null)
-            {
-                toolbarControl.OnDestroy();
-                Destroy(toolbarControl);
-            }
-#if false
-            if (partWizardStockButton != null)
-            {
-                ApplicationLauncher.Instance.RemoveModApplication(partWizardStockButton);
-                partWizardStockButton = null;
-            }
-#endif
-        }
-#endif
         internal void DummyHandler()
         {
         }
-#if false
-        internal void ToolbarTypeToggle()
-        {
-            // ToolbarIsStock value has not yet changed, so we evaluate the value against the fact it will be changing.
-            if(PartWizardPlugin.ToolbarIsStock)
-            {
-                // Was Stock bar, so let't try to use Blizzy's toolbar
-                if(ToolbarManager.ToolbarAvailable)
-                {
-                    // Okay, Blizzy toolbar is available, so lets switch.
-                    OnGUIAppLauncherDestroyed();
-                    GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
-                    GameEvents.onGUIApplicationLauncherDestroyed.Remove(OnGUIAppLauncherDestroyed);
-                    ToolbarIsStock = false;
 
-                    this.toolbarIconActive = Configuration.GetValue(PartWizardPlugin.KeyToolbarIconActive, PartWizardPlugin.BlizzyToolbarIconActive);
-                    this.toolbarIconInactive = Configuration.GetValue(PartWizardPlugin.KeyToolbarIconInactive, PartWizardPlugin.BlizzyToolbarIconInactive);
-
-                    this.partWizardBlizzyButton = ToolbarManager.Instance.add("PartWizardNS", "partWizardButton");
-                    this.partWizardBlizzyButton.ToolTip = PartWizardPlugin.Name;
-                    this.partWizardBlizzyButton.OnClick += this.partWizardButton_Click;
-                    this.partWizardBlizzyButton.Visibility = new GameScenesVisibility(GameScenes.EDITOR);
-
-                    this.SaveToolbarConfiguration();
-
-                    this.UpdateToolbarIcon();
-                }
-                else
-                {
-                    // We failed to activate the toolbar, so revert to stock
-                    PartWizardPlugin.ToolbarIsStock = true;
-
-                    GameEvents.onGUIApplicationLauncherReady.Add(OnGUIAppLauncherReady);
-                    GameEvents.onGUIApplicationLauncherDestroyed.Add(OnGUIAppLauncherDestroyed);
-                    this.partWizardBlizzyButton.Visible = false;
-
-                    this.toolbarIconActive = Configuration.GetValue(PartWizardPlugin.KeyToolbarIconActive, PartWizardPlugin.StockToolbarIconActive);
-                    this.toolbarIconInactive = Configuration.GetValue(PartWizardPlugin.KeyToolbarIconInactive, PartWizardPlugin.StockToolbarIconInactive);
-
-                    this.SaveToolbarConfiguration();
-
-                    OnGUIAppLauncherReady();
-                }
-            }
-            else
-            {
-                // Use stock Toolbar
-                ToolbarIsStock = true;
-                this.partWizardBlizzyButton.Visible = false;
-                GameEvents.onGUIApplicationLauncherReady.Add(OnGUIAppLauncherReady);
-                GameEvents.onGUIApplicationLauncherDestroyed.Add(OnGUIAppLauncherDestroyed);
-                this.toolbarIconActive = Configuration.GetValue(PartWizardPlugin.KeyToolbarIconActive, PartWizardPlugin.StockToolbarIconActive);
-                this.toolbarIconInactive = Configuration.GetValue(PartWizardPlugin.KeyToolbarIconInactive, PartWizardPlugin.StockToolbarIconInactive);
-
-                this.SaveToolbarConfiguration();
-
-                OnGUIAppLauncherReady();
-            }
-            ToolbarTypeToggleActive = false;
-        }
-#endif
 
         internal void SaveToolbarConfiguration()
         {
-            Configuration.SetValue(PartWizardPlugin.KeyToolbarIsStock, PartWizardPlugin.ToolbarIsStock);
-#if false
-            Configuration.SetValue(PartWizardPlugin.KeyToolbarIconActive, this.toolbarIconActive);
-            Configuration.SetValue(PartWizardPlugin.KeyToolbarIconInactive, this.toolbarIconInactive);
-#endif
             Configuration.Save();
         }
     }

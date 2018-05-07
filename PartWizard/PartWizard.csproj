@@ -104,7 +104,7 @@
     </Compile>
     <Compile Include="Configuration.cs" />
     <Compile Include="SymmetryEditorWindow.cs" />
-    <Compile Include="ToolbarWrapper.cs" />
+    <Compile Include="ToolbarRegistration.cs" />
     <Compile Include="GUIWindow.cs" />
   </ItemGroup>
   <ItemGroup>
