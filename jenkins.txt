@@ -29,7 +29,7 @@
 # R: RESOURCES for all projects
 R:PartWizard.Resources.Strings.resources
 
-# 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER, DIRTOZIP,RESOURCES4THISPROJECT
+# 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER, [DIRTOZIP]
 2:PartWizard,PartWizard/PartWizard.csproj,PartWizard.version,GameData/PartWizard/Plugins
 
 # 3:SOURCEFILE, DESTDIR
