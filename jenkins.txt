@@ -27,7 +27,7 @@
 1:PartWizard, PartWizard.version
 
 # R: RESOURCES for all projects
-R:Resources/Strings.resx,PartWizard.Resources.Strings.resources
+R:PartWizard/Resources/Strings.resx,PartWizard.Resources.Strings.resources
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER, [DIRTOZIP]
 2:PartWizard,PartWizard/PartWizard.csproj,PartWizard.version,GameData/PartWizard/Plugins
