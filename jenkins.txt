@@ -26,8 +26,8 @@
 # 1:GAMEDIR, VERSIONFILE [, GITHUBREPO ]
 1:PartWizard, PartWizard.version
 
-# 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
-2:PartWizard,PartWizard/PartWizard.csproj,PartWizard.version,GameData/PartWizard/Plugins
+# 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER, DIRTOZIP,RESOURCES
+2:PartWizard,PartWizard/PartWizard.csproj,PartWizard.version,GameData/PartWizard/Plugins,,PartWizard.Resources.Strings.resources
 
 # 3:SOURCEFILE, DESTDIR
 3:PartWizard.version,GameData/PartWizard
