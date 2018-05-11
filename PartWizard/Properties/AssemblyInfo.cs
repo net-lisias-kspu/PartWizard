@@ -41,3 +41,6 @@ using System.Resources;
 [assembly: KSPAssembly("PartWizard", 1, 2)]
 
 [assembly: CLSCompliant(false)]
+
+[assembly: KSPAssemblyDependency("ClickThroughBlocker", 1, 0)]
+[assembly: KSPAssemblyDependency("ToolbarController", 1, 0)]
