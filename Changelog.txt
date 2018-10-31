@@ -44,3 +44,6 @@ Changes
 
 1.3.7.4
 	Added dependency checks for clickthroughblocker and toolbarcontrol
+
+1.3.7.5
+	Version bump for 1.5 rebuild
