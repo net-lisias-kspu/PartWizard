@@ -1,5 +1,9 @@
 # Part Wizard :: Change Log
 
+* 2018-0403: 1.3.7 (linuxgurugamer) for KSP 1.4.2
+	+ Updated for 1.4.1
+	+ Added support for ToolbarController
+	+ Added support for ClickThroughBlocker
 * 2017-1008: 1.3.6 (linuxgurugamer) for KSP 1.3.1
 	+ Updated for KSP 1.3.1
 * 2017-0528: 1.3.4 (linuxgurugamer) for KSP 1.3.0
