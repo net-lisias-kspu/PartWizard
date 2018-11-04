@@ -1,5 +1,9 @@
 # Part Wizard :: Change Log
 
+* 2018-0507: 1.3.7.1 (linuxgurugamer) for KSP 1.4.3
+	+ Updated code for Toolbarcontroller
+	+ Added ToolbarRegistration
+	+ removed blizzy/stock options from setting
 * 2018-0403: 1.3.7 (linuxgurugamer) for KSP 1.4.2
 	+ Updated for 1.4.1
 	+ Added support for ToolbarController
