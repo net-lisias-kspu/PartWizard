@@ -1,5 +1,7 @@
 # Part Wizard :: Change Log
 
+* 2017-0106: 1.3.1 (linuxgurugamer) for KSP 1.2.2
+	+ Fixed issue where parts with category = "none" was causing a nullref
 * 2017-0104: 1.3.0 (linuxgurugamer) for KSP 1.2.2
 	+ Updated for 1.2.2
 	+ Added special colors for fuel lines and struts
