@@ -1,5 +1,7 @@
 # Part Wizard :: Change Log
 
+* 2017-0507: 1.3.3 (linuxgurugamer) for KSP 1.2.2
+	+ Fixed issue where too many partcategories could cause an index error
 * 2017-0214: 1.3.2 (linuxgurugamer) for KSP 1.2.2
 	+ Fixed problem where individual categories couldn't be selected or deselected
 * 2017-0106: 1.3.1 (linuxgurugamer) for KSP 1.2.2
