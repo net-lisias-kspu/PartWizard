@@ -1,5 +1,7 @@
 # Part Wizard :: Change Log
 
+* 2018-0509: 1.3.7.2 (linuxgurugamer) for KSP 1.4.3
+	+ Version bump to fix CKAN
 * 2018-0507: 1.3.7.1 (linuxgurugamer) for KSP 1.4.3
 	+ Updated code for Toolbarcontroller
 	+ Added ToolbarRegistration
