@@ -1,5 +1,7 @@
 # Part Wizard :: Change Log
 
+* 2017-1008: 1.3.6 (linuxgurugamer) for KSP 1.3.1
+	+ Updated for KSP 1.3.1
 * 2017-0528: 1.3.4 (linuxgurugamer) for KSP 1.3.0
 	+ Updated for 1.3
 * 2017-0507: 1.3.3 (linuxgurugamer) for KSP 1.2.2
