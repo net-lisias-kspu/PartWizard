@@ -81,11 +81,6 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AssemblyVersion.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AssemblyVersion.tt</DependentUpon>
-    </Compile>
     <Compile Include="GUIControls.cs" />
     <Compile Include="HighlightTracker2.cs" />
     <Compile Include="HighlightTrackerException.cs" />
@@ -107,6 +102,9 @@
     <Compile Include="SymmetryEditorWindow.cs" />
     <Compile Include="ToolbarRegistration.cs" />
     <Compile Include="GUIWindow.cs" />
+    <Compile Include="Properties\Version.cs">
+      <DependentUpon>Version.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Strings.resx">
