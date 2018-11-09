@@ -103,7 +103,6 @@ namespace PartWizard
             GamePersistence.SaveGame("persistent", HighLogic.SaveFolder, SaveMode.OVERWRITE);
         }
 
-#if DEBUG
         public static Part FindSymmetryRoot(Part part)
         {
             if(part == null)
@@ -114,7 +113,6 @@ namespace PartWizard
 
             return part;
         }
-#endif
 
         public static void CreateSymmetry(Part symmetricRoot, List<Part> counterparts)
         {

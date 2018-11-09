@@ -28,63 +28,54 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
-
 using UnityEngine;
+
+using Logger = KSPe.Util.Log.Logger; // To solve conflict with UnityEngine's one
 
 namespace PartWizard
 {
     internal static class Log
     {
-        private const string Prefix = "[PartWizard]";
+		private static readonly Logger LOG = Logger.CreateForType<PartWizardPlugin>();
 
         private static readonly DateTime start = DateTime.Now;
 
+		[Conditional("DEBUG")]
         public static void Assert(bool condition)
         {
-#if DEBUG || TEST
             if(!condition)
             {
                 string message = string.Format(CultureInfo.InvariantCulture, "Assertion failed in {0}.", Log.GetCallingMethod(2));
-#endif
 #if TEST
                 throw new Exception(message);
 #endif
-#if DEBUG && !TEST
-                Log.Write(message);
-#endif
-#if DEBUG || TEST
+                LOG.info(message);
             }
-#endif
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+		[Conditional("DEBUG")]
         public static void Assert(bool condition, string format, params object[] args)
         {
-#if DEBUG || TEST
             if(!condition)
             {
                 string message = string.Format(CultureInfo.InvariantCulture, "Assertion failed in {0}: {1}", Log.GetCallingMethod(2), string.Format(CultureInfo.InvariantCulture, format, args));
-#endif
 #if TEST
                 throw new Exception(message);
 #endif
-#if DEBUG && !TEST
-                Log.Write(message);
-#endif
-#if DEBUG || TEST
+                LOG.info(message);
             }
-#endif
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static void Trace()
         {
-            Log.Write("{0}", Log.GetCallingMethod(2));
+            LOG.info("{0}", Log.GetCallingMethod(2));
         }
 
         public static void Trace(string format, params object[] args)
         {
-            Log.Write("{0} {1}", Log.GetCallingMethod(2), string.Format(CultureInfo.InvariantCulture, format, args));
+            LOG.info("{0} {1}", Log.GetCallingMethod(2), string.Format(CultureInfo.InvariantCulture, format, args));
         }
 
         private static string GetCallingMethod(int skipCount)
@@ -108,108 +99,104 @@ namespace PartWizard
             return string.Format(CultureInfo.InvariantCulture, "({0}, {1})", (int)vector.x, (int)vector.y);
         }
 
-        public static void Write(string format, params object[] args)
-        {
-            UnityEngine.Debug.Log(string.Format(CultureInfo.InvariantCulture, "{0} {1}", Log.Prefix, string.Format(CultureInfo.InvariantCulture, format, args)));
-        }
-
+		[Conditional("DEBUG")]
         public static void WriteStyleReport(GUIStyle style, string description)
         {
-#if DEBUG
             if(style != null)
             {
-                Log.Write("STYLE REPORT FOR {0}:", description);
-                Log.Write("\tname = {0}", style.name);
-                Log.Write("\tnormal.textColor = {0}", Log.ColorToRGB(style.normal.textColor));
-                Log.Write("\tonActive.textColor = {0}", Log.ColorToRGB(style.onActive.textColor));
-                Log.Write("\tonNormal.textColor = {0}", Log.ColorToRGB(style.onNormal.textColor));
-                Log.Write("\tonHover.textColor = {0}", Log.ColorToRGB(style.onHover.textColor));
-                Log.Write("END OF STYLE REPORT");
+                LOG.info("STYLE REPORT FOR {0}:", description);
+                LOG.info("\tname = {0}", style.name);
+                LOG.info("\tnormal.textColor = {0}", Log.ColorToRGB(style.normal.textColor));
+                LOG.info("\tonActive.textColor = {0}", Log.ColorToRGB(style.onActive.textColor));
+                LOG.info("\tonNormal.textColor = {0}", Log.ColorToRGB(style.onNormal.textColor));
+                LOG.info("\tonHover.textColor = {0}", Log.ColorToRGB(style.onHover.textColor));
+                LOG.info("END OF STYLE REPORT");
             }
             else
             {
-                Log.Write("STYLE REPORT FOR {0}: null", description);
+                LOG.info("STYLE REPORT FOR {0}: null", description);
             }
-#endif
         }
 
         private static string ColorToRGB(Color color)
         {
             return string.Format("#{0:X2}{1:X2}{2:X2}", (byte)(Mathf.Clamp01(color.r)), (byte)(Mathf.Clamp01(color.g)), (byte)(Mathf.Clamp01(color.b)));
         }
-        
+
+		[Conditional("DEBUG")]
         public static void WriteSymmetryReport(Part part)
         {
-#if DEBUG
             Part r = PartWizard.FindSymmetryRoot(part);
 
-            Log.Write("SYMMETRY REPORT FOR {0}", r.name);
-            Log.Write("Root:");
-            Log.Write("\tname = {0}", r.name);
-            Log.Write("\tsymMethod = {0}", r.symMethod);
-            Log.Write("\tstackSymmetry = {0}", r.stackSymmetry);
-            Log.Write("Counterparts:");
+            LOG.info("SYMMETRY REPORT FOR {0}", r.name);
+            LOG.info("Root:");
+            LOG.info("\tname = {0}", r.name);
+            LOG.info("\tsymMethod = {0}", r.symMethod);
+            LOG.info("\tstackSymmetry = {0}", r.stackSymmetry);
+            LOG.info("Counterparts:");
             for(int index = 0; index < r.symmetryCounterparts.Count; index++)
             {
                 Part c = r.symmetryCounterparts[index];
 
-                Log.Write("\t{0} name = {1}", index, c.name);
-                Log.Write("\t{0} symMethod = {1}", index, c.symMethod);
-                Log.Write("\t{0} stackSymmetry = {1}", index, c.stackSymmetry);
-                Log.Write("\t{0} children = {1}", index, c.children.Count);
+                LOG.info("\t{0} name = {1}", index, c.name);
+                LOG.info("\t{0} symMethod = {1}", index, c.symMethod);
+                LOG.info("\t{0} stackSymmetry = {1}", index, c.stackSymmetry);
+                LOG.info("\t{0} children = {1}", index, c.children.Count);
             }
-            Log.Write("END OF SYMMETRY REPORT");
-#endif // DEBUG
+            LOG.info("END OF SYMMETRY REPORT");
         }
 
+		[Conditional("DEBUG")]
         public static void WriteTransformReport(Part part)
         {
-#if DEBUG
-            Log.Write("TRANSFORM REPORT FOR {0}", part.name);
-            Log.Write("\ttransform = {0}", part.transform != null ? part.transform.name : "<null>");
-            Log.Write("\tpartTransform = {0}", part.partTransform != null ? part.partTransform.name : "<null>");
+            LOG.info("TRANSFORM REPORT FOR {0}", part.name);
+            LOG.info("\ttransform = {0}", part.transform != null ? part.transform.name : "<null>");
+            LOG.info("\tpartTransform = {0}", part.partTransform != null ? part.partTransform.name : "<null>");
             Transform[] transforms = part.GetComponents<Transform>();
             if(transforms == null)
             {
-                Log.Write("\tTransforms: <n/a>");
+                LOG.info("\tTransforms: <n/a>");
             }
             else
             {
-                Log.Write("\tTransforms:");
+                LOG.info("\tTransforms:");
 
                 Log.WriteTransformReport(transforms, 2);
             }
-            Log.Write("END OF TRANSFORM REPORT");
-#endif // DEBUG
+            LOG.info("END OF TRANSFORM REPORT");
         }
 
+		[Conditional("DEBUG")]
         private static void WriteTransformReport(Transform[] transforms, int tabCount)
         {
-#if DEBUG
             for(int transformIndex = 0; transformIndex < transforms.Length; transformIndex++)
             {
                 StringBuilder reportLine = new StringBuilder();
 
                 for(int tabIndex = 0; tabIndex < tabCount; tabIndex++)
                 {
-                    reportLine.Append("\t");    
+                    reportLine.Append("\t");
                 }
 
                 Transform transform = transforms[transformIndex];
 
                 reportLine.AppendFormat("{0} name = {1} ({2} children)", transformIndex, transform.name, transform.childCount);
 
-                Log.Write(reportLine.ToString());
-                
+                LOG.info(reportLine.ToString());
+
                 if(transform.childCount > 0)
                 {
                     Log.WriteTransformReport(transform.GetChildren(), tabCount + 1);
                 }
             }
-#endif // DEBUG
         }
 
-        private static Transform[] GetChildren(this Transform transform)
+		internal static void Write(string msg, params object[] @params)
+		{
+			LOG.info(msg, @params);
+		}
+
+		private static Transform[] GetChildren(this Transform transform)
         {
 #if DEBUG
             Transform[] result = new Transform[transform.childCount];
