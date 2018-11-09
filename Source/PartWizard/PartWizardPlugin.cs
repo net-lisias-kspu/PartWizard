@@ -29,6 +29,7 @@ using System.Reflection;
 using KSP.UI.Screens;
 using UnityEngine;
 
+using KSPe.GameDB;
 using ToolbarControl_NS;
 
 
@@ -50,16 +51,12 @@ namespace PartWizard
 
         internal static bool ToolbarIsStock;
         internal static bool ToolbarTypeToggleActive = false;
-        private const string BlizzyToolbarIconActive = "PartWizard/Icons/partwizard_active_toolbar_24_icon";
-        private const string BlizzyToolbarIconInactive = "PartWizard/Icons/partwizard_inactive_toolbar_24_icon";
-        private const string StockToolbarIconActive = "PartWizard/Icons/partwizard_active_toolbar_38_icon";
-        private const string StockToolbarIconInactive = "PartWizard/Icons/partwizard_inactive_toolbar_38_icon";
+        private readonly string BlizzyToolbarIconActive = Asset<PartWizardPlugin>.Solve("Icons/partwizard_active_toolbar_24_icon");
+        private readonly string BlizzyToolbarIconInactive = Asset<PartWizardPlugin>.Solve("Icons/partwizard_inactive_toolbar_24_icon");
+        private readonly string StockToolbarIconActive = Asset<PartWizardPlugin>.Solve("Icons/partwizard_active_toolbar_38_icon");
+        private readonly string StockToolbarIconInactive = Asset<PartWizardPlugin>.Solve("Icons/partwizard_inactive_toolbar_38_icon");
 
-        private const string KeyToolbarIconActive = "toolbarActiveIcon";
-        private const string KeyToolbarIconInactive = "toolbarInactiveIcon";
-
-
-        internal const string MODID = "PartWizard_NS";
+        internal const string MODID = "PartWizard";
         internal const string MODNAME = "Part Wizard";
 
         public void Awake()
@@ -73,12 +70,9 @@ namespace PartWizard
                 toolbarControl = gameObject.AddComponent<ToolbarControl>();
                 toolbarControl.AddToAllToolbars(ToggleVisibility, ToggleVisibility,
                     ApplicationLauncher.AppScenes.VAB | ApplicationLauncher.AppScenes.SPH,
-                    MODID,
-                    "partWizardButton",
-                    StockToolbarIconActive,
-                    StockToolbarIconInactive,
-                    BlizzyToolbarIconActive,
-                    BlizzyToolbarIconInactive,
+                    MODID, MODID+"Button",
+                    StockToolbarIconActive, StockToolbarIconInactive,
+                    BlizzyToolbarIconActive,BlizzyToolbarIconInactive,
                     MODNAME
                 );
             }

@@ -7,12 +7,12 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Part Wizard")]
+[assembly: AssemblyTitle("Part Wizard /L Unofficial")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Part Wizard")]
-[assembly: AssemblyCopyright("Copyright © 2014-2016 Eric Harris (ozraven)")]
+[assembly: AssemblyCopyright("© 2014-2018 Eric Harris (ozraven), 2018 Lisias T")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -42,6 +42,6 @@ using System.Resources;
 
 [assembly: CLSCompliant(false)]
 
-[assembly: KSPAssemblyDependency("KSPe", 2, 0)]
+[assembly: KSPAssemblyDependency("KSPe", 2, 1)]
 [assembly: KSPAssemblyDependency("ClickThroughBlocker", 1, 0)]
 [assembly: KSPAssemblyDependency("ToolbarController", 1, 0)]
