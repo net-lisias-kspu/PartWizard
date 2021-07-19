@@ -7,13 +7,14 @@ rem GAMEDATA is the name of the local GameData
 rem VERSIONFILE is the name of the version file, usually the same as GAMEDATA,
 rem    but not always
 
+
 set H=%KSPDIR%
 set GAMEDIR=PartWizard
-set GAMEDATA="GameData\"
+set GAMEDATA="GameData"
 set VERSIONFILE=%GAMEDIR%.version
 
 copy /Y "%1%2" "%GAMEDATA%\%GAMEDIR%\Plugins"
-copy /Y %VERSIONFILE% %GAMEDATA%\%GAMEDIR%
+rem copy /Y %VERSIONFILE% %GAMEDATA%\%GAMEDIR%
 
 xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%H%\GameData\%GAMEDIR%"
 

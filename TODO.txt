@@ -4,3 +4,5 @@ DONE	* (linuxgurugamer) Add way to only display specific class of parts.
 DONE	* (linuxgurugamer) Display parts with specific resource.
 DONE	* (linuxgurugamer) fix bug where initial entry into editor had button set to active
 DON		* (linuxgurugamer) Added color to bad struts & fuel lines
+
+ add a (toggable) column that shows the path of the respective part similar to your PartInfo mod, quite helpful to find and replace obsolete parts in craft files.
