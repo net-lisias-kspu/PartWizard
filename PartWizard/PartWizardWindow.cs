@@ -91,10 +91,12 @@ namespace PartWizard
         {
             Name = 0,
             StageAsc = 1,
-            StageDesc = 2
+            StageDesc = 2,
+            WeightInc = 3,
+            WeightDec = 4
         }
         private SortBy sortBy = SortBy.Name;
-        private GUIContent[] sortTypeContents = new GUIContent[] { new GUIContent("Name"), new GUIContent("Stage Ascending"), new GUIContent("Stage Descending") };
+        private GUIContent[] sortTypeContents = new GUIContent[] { new GUIContent("Name"), new GUIContent("Stage Asc"), new GUIContent("Stage Desc"), new GUIContent("Mass Inc"), new GUIContent("Mass Desc") };
 
         private GUIStyle labelStyle;
         private GUIStyle toggleStyle;
@@ -267,6 +269,8 @@ namespace PartWizard
             }
         }
 
+        const string WEIGHT_FORMAT = "000000.###";
+
         public override void OnRender()
         {
             try
@@ -383,6 +387,15 @@ namespace PartWizard
                                 parts.Sort((p, q) => p.partInfo.title.CompareTo(q.partInfo.title));
                             }
                             break;
+                        case SortBy.WeightInc:
+                            parts.Sort((p, q) => (p.mass == q.mass ? p.persistentId:p.mass ).CompareTo(
+                                p.mass == q.mass?q.persistentId:q.mass));
+                            break;
+                        case SortBy.WeightDec:
+                            parts.Sort((q,p) => (p.mass == q.mass ? p.persistentId : p.mass).CompareTo(
+                                p.mass == q.mass ? q.persistentId : q.mass));
+
+                            break;
                     }
                 }
 #region Part List
@@ -492,6 +505,15 @@ namespace PartWizard
                                         lastStage = part.inverseStage;
                                     GUILayout.Label(lastStage.ToString() + ": ");                                    
                                 }
+                                if (sortBy == SortBy.WeightDec || sortBy == SortBy.WeightInc)
+                                {
+                                    var str = part.mass.ToString("F3").Trim('0');
+                                    if (str[0] == '.')
+                                        str = "0" + str;
+                                    if (str[str.Length - 1] == '.')
+                                        str = str + "0";
+                                    GUILayout.Label(str + ": ", GUILayout.Width(50));
+                                }
                                 if (EditorLogic.fetch.editorScreen != EditorScreen.Actions)
                                 {                                    
                                     // Check compound parts for integrity.
@@ -503,12 +525,13 @@ namespace PartWizard
                                             labelStyle.normal.textColor = Color.red;
                                         }
                                     }
-                                    labelStyle.fixedWidth = 250;
+                                    //labelStyle.fixedWidth = 250;
+                                    labelStyle.fixedWidth = 275;
                                     GUILayout.Label(new GUIContent(part.partInfo.title, part.partInfo.name), labelStyle);
                                 }
                                 else
                                 { 
-                                    Log.Write("EditorScreen.Actions, part: " + part.partInfo.title);
+                                    //Log.Write("EditorScreen.Actions, part: " + part.partInfo.title);
                                     if (GUIControls.MouseOverButton(new GUIContent(part.partInfo.title, part.partInfo.name), out actionEditorPartButtonMouseOver, this.actionEditorModePartButtonStyle))
                                     {
                                         // Each part gets the EditorActionPartSelector added to it when the editor switches to the Actions screen. (And it
