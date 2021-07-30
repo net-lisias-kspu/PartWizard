@@ -156,9 +156,6 @@ if $(ConfigurationName) == Release (
   </Target>
   -->
   <ItemGroup>
-    <None Include="TODO.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="AssemblyVersion.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AssemblyVersion.cs</LastGenOutput>
