@@ -58,7 +58,8 @@ using System.IO;
 
 using UnityEngine;
 
-using ClickThroughFix;
+using GUI = KSPe.UI.GUI;
+using GUILayout = KSPe.UI.GUILayout;
 
 using Localized = PartWizard.Resources.Strings;
 
@@ -68,8 +69,6 @@ namespace PartWizard
 
     internal abstract class GUIWindow
     {
-        public event VisibleChangedHandler OnVisibleChanged;
-
         private static volatile int NextWindowId = 5000;
 
         private Rect minimumDimensions;
@@ -198,11 +197,6 @@ namespace PartWizard
             private set
             {
                 this.visible = value;
-
-                if(this.OnVisibleChanged != null)
-                {
-                    this.OnVisibleChanged(this, this.Visible);
-                }
             }
         }
 
@@ -263,7 +257,7 @@ namespace PartWizard
                 {
                     GUI.skin.window.clipping = TextClipping.Clip;
 
-                    this.window = ClickThruBlocker.GUILayoutWindow(this.windowId, this.window, this.InternalRender, this.title);
+                    this.window = GUILayout.Window(this.windowId, this.window, this.InternalRender, this.title);
 
                     foreach(GUIWindow child in this.children)
                     {
@@ -344,7 +338,7 @@ namespace PartWizard
             GUILayoutOption lockHeight = GUILayout.ExpandHeight(false);
 
             GUILayoutOption informationLabelMaxHeight = GUILayout.MaxHeight(this.window.height * 0.75f);    // Magically use 3/4ths of the window for the top information label.
-            GUILayout.Label(string.Format(CultureInfo.CurrentCulture, Localized.GuiRenderErrorTextFormat, PartWizardPlugin.Name), maxWidth, informationLabelMaxHeight, lockWidth, lockHeight);
+            GUILayout.Label(string.Format(CultureInfo.CurrentCulture, Localized.GuiRenderErrorTextFormat, Version.FriendlyName), maxWidth, informationLabelMaxHeight, lockWidth, lockHeight);
 
             // Fix up the path for the current environment.
             string platformCompatibleRootPath = KSPUtil.ApplicationRootPath.Replace('/', Path.DirectorySeparatorChar);

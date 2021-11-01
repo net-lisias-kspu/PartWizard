@@ -28,9 +28,19 @@ namespace PartWizard
 {
     internal static class Log
     {
-		private static readonly Logger LOG = Logger.CreateForType<PartWizardPlugin>();
+		private static readonly Logger LOG = Logger.CreateForType<PartWizardPlugin>(1);
 
         private static readonly DateTime start = DateTime.Now;
+
+        public static void Force(string msg, params object[] @params)
+        {
+            LOG.force(msg, @params);
+        }
+
+        public static void Error(string msg, params object[] @params)
+        {
+            LOG.error(msg, @params);
+        }
 
 		[Conditional("DEBUG")]
         public static void Assert(bool condition)
@@ -62,12 +72,12 @@ namespace PartWizard
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static void Trace()
         {
-            LOG.info("{0}", Log.GetCallingMethod(2));
+            LOG.trace("{0}", Log.GetCallingMethod(2));
         }
 
         public static void Trace(string format, params object[] args)
         {
-            LOG.info("{0} {1}", Log.GetCallingMethod(2), string.Format(CultureInfo.InvariantCulture, format, args));
+            LOG.trace("{0} {1}", Log.GetCallingMethod(2), string.Format(CultureInfo.InvariantCulture, format, args));
         }
 
         private static string GetCallingMethod(int skipCount)
@@ -96,17 +106,17 @@ namespace PartWizard
         {
             if(style != null)
             {
-                LOG.info("STYLE REPORT FOR {0}:", description);
-                LOG.info("\tname = {0}", style.name);
-                LOG.info("\tnormal.textColor = {0}", Log.ColorToRGB(style.normal.textColor));
-                LOG.info("\tonActive.textColor = {0}", Log.ColorToRGB(style.onActive.textColor));
-                LOG.info("\tonNormal.textColor = {0}", Log.ColorToRGB(style.onNormal.textColor));
-                LOG.info("\tonHover.textColor = {0}", Log.ColorToRGB(style.onHover.textColor));
-                LOG.info("END OF STYLE REPORT");
+                LOG.trace("STYLE REPORT FOR {0}:", description);
+                LOG.trace("\tname = {0}", style.name);
+                LOG.trace("\tnormal.textColor = {0}", Log.ColorToRGB(style.normal.textColor));
+                LOG.trace("\tonActive.textColor = {0}", Log.ColorToRGB(style.onActive.textColor));
+                LOG.trace("\tonNormal.textColor = {0}", Log.ColorToRGB(style.onNormal.textColor));
+                LOG.trace("\tonHover.textColor = {0}", Log.ColorToRGB(style.onHover.textColor));
+                LOG.trace("END OF STYLE REPORT");
             }
             else
             {
-                LOG.info("STYLE REPORT FOR {0}: null", description);
+                LOG.trace("STYLE REPORT FOR {0}: null", description);
             }
         }
 
@@ -120,42 +130,42 @@ namespace PartWizard
         {
             Part r = PartWizard.FindSymmetryRoot(part);
 
-            LOG.info("SYMMETRY REPORT FOR {0}", r.name);
-            LOG.info("Root:");
-            LOG.info("\tname = {0}", r.name);
-            LOG.info("\tsymMethod = {0}", r.symMethod);
-            LOG.info("\tstackSymmetry = {0}", r.stackSymmetry);
-            LOG.info("Counterparts:");
+            LOG.trace("SYMMETRY REPORT FOR {0}", r.name);
+            LOG.trace("Root:");
+            LOG.trace("\tname = {0}", r.name);
+            LOG.trace("\tsymMethod = {0}", r.symMethod);
+            LOG.trace("\tstackSymmetry = {0}", r.stackSymmetry);
+            LOG.trace("Counterparts:");
             for(int index = 0; index < r.symmetryCounterparts.Count; index++)
             {
                 Part c = r.symmetryCounterparts[index];
 
-                LOG.info("\t{0} name = {1}", index, c.name);
-                LOG.info("\t{0} symMethod = {1}", index, c.symMethod);
-                LOG.info("\t{0} stackSymmetry = {1}", index, c.stackSymmetry);
-                LOG.info("\t{0} children = {1}", index, c.children.Count);
+                LOG.trace("\t{0} name = {1}", index, c.name);
+                LOG.trace("\t{0} symMethod = {1}", index, c.symMethod);
+                LOG.trace("\t{0} stackSymmetry = {1}", index, c.stackSymmetry);
+                LOG.trace("\t{0} children = {1}", index, c.children.Count);
             }
-            LOG.info("END OF SYMMETRY REPORT");
+            LOG.trace("END OF SYMMETRY REPORT");
         }
 
 		[Conditional("DEBUG")]
         public static void WriteTransformReport(Part part)
         {
-            LOG.info("TRANSFORM REPORT FOR {0}", part.name);
-            LOG.info("\ttransform = {0}", part.transform != null ? part.transform.name : "<null>");
-            LOG.info("\tpartTransform = {0}", part.partTransform != null ? part.partTransform.name : "<null>");
+            LOG.trace("TRANSFORM REPORT FOR {0}", part.name);
+            LOG.trace("\ttransform = {0}", part.transform != null ? part.transform.name : "<null>");
+            LOG.trace("\tpartTransform = {0}", part.partTransform != null ? part.partTransform.name : "<null>");
             Transform[] transforms = part.GetComponents<Transform>();
             if(transforms == null)
             {
-                LOG.info("\tTransforms: <n/a>");
+                LOG.trace("\tTransforms: <n/a>");
             }
             else
             {
-                LOG.info("\tTransforms:");
+                LOG.trace("\tTransforms:");
 
                 Log.WriteTransformReport(transforms, 2);
             }
-            LOG.info("END OF TRANSFORM REPORT");
+            LOG.trace("END OF TRANSFORM REPORT");
         }
 
 		[Conditional("DEBUG")]
@@ -174,7 +184,7 @@ namespace PartWizard
 
                 reportLine.AppendFormat("{0} name = {1} ({2} children)", transformIndex, transform.name, transform.childCount);
 
-                LOG.info(reportLine.ToString());
+                LOG.trace(reportLine.ToString());
 
                 if(transform.childCount > 0)
                 {

@@ -39,9 +39,8 @@ using System.Resources;
 [assembly: NeutralResourcesLanguageAttribute("en-US")]
 
 [assembly: KSPAssembly("PartWizard", PartWizard.Version.major, PartWizard.Version.major)]
+[assembly: KSPAssemblyDependency("KSPe", 2, 4)]
+[assembly: KSPAssemblyDependency("KSPe", 2, 4)]
 
 [assembly: CLSCompliant(false)]
 
-[assembly: KSPAssemblyDependency("KSPe", 2, 1)]
-[assembly: KSPAssemblyDependency("ClickThroughBlocker", 1, 0)]
-[assembly: KSPAssemblyDependency("ToolbarController", 1, 0)]

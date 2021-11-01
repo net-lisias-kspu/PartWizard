@@ -57,8 +57,7 @@ using System.Reflection;
 using KSP.UI.Screens;
 using UnityEngine;
 
-using KSPe.GameDB;
-using ToolbarControl_NS;
+using Toolbar = KSPe.UI.Toolbar;
 
 
 namespace PartWizard
@@ -70,45 +69,31 @@ namespace PartWizard
         static internal PartWizardPlugin Instance;
 
 
-        ToolbarControl toolbarControl;
+        Toolbar.Button toolbarControl;
 
         private PartWizardWindow partWizardWindow;
 
-        public static readonly string Name = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductName;
-        public static readonly string Version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
-
         internal static bool ToolbarIsStock;
         internal static bool ToolbarTypeToggleActive = false;
-        private readonly string BlizzyToolbarIconActive = Asset<PartWizardPlugin>.Solve("Icons/partwizard_active_toolbar_24_icon");
-        private readonly string BlizzyToolbarIconInactive = Asset<PartWizardPlugin>.Solve("Icons/partwizard_inactive_toolbar_24_icon");
-        private readonly string StockToolbarIconActive = Asset<PartWizardPlugin>.Solve("Icons/partwizard_active_toolbar_38_icon");
-        private readonly string StockToolbarIconInactive = Asset<PartWizardPlugin>.Solve("Icons/partwizard_inactive_toolbar_38_icon");
-
-        internal const string MODID = "PartWizard";
-        internal const string MODNAME = "Part Wizard";
 
         public void Awake()
         {
             Instance = this;
             if(HighLogic.LoadedSceneIsEditor)
             {
-                this.partWizardWindow = new PartWizardWindow(PartWizardPlugin.Name, PartWizardPlugin.Version);
-                this.partWizardWindow.OnVisibleChanged += partWizardWindow_OnVisibleChanged;
+                this.partWizardWindow = new PartWizardWindow(Version.FriendlyName, Version.Text);
 
-                toolbarControl = gameObject.AddComponent<ToolbarControl>();
-                toolbarControl.AddToAllToolbars(ToggleVisibility, ToggleVisibility,
-                    ApplicationLauncher.AppScenes.VAB | ApplicationLauncher.AppScenes.SPH,
-                    MODID, MODID+"Button",
-                    StockToolbarIconActive, StockToolbarIconInactive,
-                    BlizzyToolbarIconActive,BlizzyToolbarIconInactive,
-                    MODNAME
-                );
+                this.toolbarControl = Toolbar.Button.Create(this
+                        , ApplicationLauncher.AppScenes.VAB | ApplicationLauncher.AppScenes.SPH
+                        , UI.Icon.StockToolbarIconActive, UI.Icon.StockToolbarIconInactive
+                        , UI.Icon.BlizzyToolbarIconActive, UI.Icon.BlizzyToolbarIconInactive
+                        , Version.FriendlyName
+                    );
+
+                this.toolbarControl.Toolbar.Add(Toolbar.Button.ToolbarEvents.Kind.Active, new Toolbar.Button.Event(this.ToggleVisibility, this.ToggleVisibility));
+
+                ToolbarController.Instance.Add(this.toolbarControl);
             }
-        }
-
-        private void partWizardWindow_OnVisibleChanged(GUIWindow window, bool visible)
-        {
-            this.UpdateToolbarIcon();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "GUI")]
@@ -123,14 +108,11 @@ namespace PartWizard
 
         public void OnDestroy()
         {
-            this.partWizardWindow.OnVisibleChanged -= partWizardWindow_OnVisibleChanged;
-
             this.partWizardWindow.Hide();
             this.partWizardWindow = null;
 
-            toolbarControl.OnDestroy();
-            Destroy(toolbarControl);
-
+            ToolbarController.Instance.Destroy();
+            this.toolbarControl = null;
         }
 
         private void ToggleVisibility()
@@ -144,31 +126,6 @@ namespace PartWizard
                 this.partWizardWindow.Show();
             }
         }
-
-        private void partWizardButton_Click(ClickEvent e)
-        {
-            this.ToggleVisibility();
-        }
-
-        private void UpdateToolbarIcon()
-        {
-            if (partWizardWindow.Visible)
-            {
-                toolbarControl.SetTexture(StockToolbarIconActive, BlizzyToolbarIconActive);
-            }
-            else
-            {
-                toolbarControl.SetTexture(StockToolbarIconInactive, BlizzyToolbarIconInactive);
-
-            }
-        }
-
-
-
-        internal void DummyHandler()
-        {
-        }
-
 
         internal void SaveToolbarConfiguration()
         {
