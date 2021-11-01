@@ -1,6 +1,8 @@
-# Part Wizard /L Unofficial
+# Part Wizard /L Unleashed
 
-Part Wizard is a vehicle design utility plugin that adds a few conveniences when building your next strut/booster carrier. Unofficial fork by Lisias.
+Part Wizard is a vehicle design utility plugin that adds a few conveniences when building your next strut/booster carrier.
+
+[Unleashed](https://ksp.lisias.net/add-ons-unleashed/) fork by Lisias.
 
 
 ## In a Hurry
@@ -117,7 +119,32 @@ To install, place the GameData folder inside your Kerbal Space Program folder.
 	+ [Toolbar Control](https://github.com/net-lisias-kspu/ToolbarControl)
 
 ### Licensing
-This work is licensed under [BSD 3 Clause](https://opensource.org/licenses/BSD-3-Clause). See [here](./LICENSE).
+
+* Part Wizard /L is double licensed as follows:
+	+ [SKL 1.0](https://ksp.lisias.net/SKL-1_0.txt). See [here](./LICENSE.KSPe.SKL-1_0)
+		+ You are free to:
+			- Use : unpack and use the material in any computer or device
+			- Redistribute : redistribute the original package in any medium
+		+ Under the following terms:
+			- You agree to use the material only on (or to) KSP
+			- You don't alter the package in any form or way (but you can embedded it)
+			- You don't change the material in any way, and retain any copyright notices
+			- You must explicitly state the author's Copyright, as well an Official Site for downloading the original and new versions (the one you used to download is good enough)
+	+ [GPL 2.0](https://www.gnu.org/licenses/gpl-2.0.txt). See [here](./LICENSE.KSPe.GPL-2_0)
+		+ You are free to:
+			- Use : unpack and use the material in any computer or device
+			- Redistribute : redistribute the original package in any medium
+			- Adapt : Reuse, modify or incorporate source code into your works (and redistribute it!) 
+		+ Under the following terms:
+			- You retain any copyright notices
+			- You recognise and respect any trademarks
+			- You don't impersonate the authors, neither redistribute a derivative that could be misrepresented as theirs.
+			- You credit the author and republish the copyright notices on your works where the code is used.
+			- You relicense (and fully comply) your works using GPL 2.0
+			- You don't mix your work with GPL incompatible works.
+	* If by some reason the GPL would be invalid for you, rest assured that you still retain the right to Use the Work under SKL 1.0. 
+
+Releases previous to 1.3.10 are still available under the BSD-3 license [here](https://github.com/net-lisias-kspu/PartWizard/tree/Source/BSD-3). Please note this [statement](https://www.gnu.org/licenses/license-list.en.html#ModifiedBSD) from FSF.
 
 Please note the copyrights and trademarks in [NOTICE](./NOTICE).
 

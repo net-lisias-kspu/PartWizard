@@ -1,4 +1,4 @@
-# Part Wizard :: Changes
+# Part Wizard /L Unleashed :: Changes
 
 * 2018-1109: 1.3.7.6 (Lisias) for KSP 1.4.1+; 1.5
 	+ Using KSPe Facilities

@@ -7,8 +7,8 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Part Wizard /L Unofficial")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Part Wizard /L Unleashed")]
+[assembly: AssemblyDescription("Part Wizard is a vehicle design utility plugin that adds a few conveniences when building your next strut/booster carrier.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Part Wizard")]
