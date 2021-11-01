@@ -124,11 +124,12 @@ Please note the copyrights and trademarks in [NOTICE](./NOTICE).
 
 ## UPSTREAM
 
+* [ozraven](https://forum.kerbalspaceprogram.com/index.php?/profile/106313-ozraven/): ROOT
+	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/72468-113-part-wizard-125-22-jun-2016/)
+	+ [imgur](https://imgur.com/a/Wjaee)
+	+ [CurseForge](https://kerbal.curseforge.com/projects/part-wizard)
+	+ [GitHub](https://github.com/ozraven/PartWizard)
 * [LinuxGuruGamer](https://forum.kerbalspaceprogram.com/index.php?/profile/129964-linuxgurugamer/)
 	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/154466-151-part-wizard-continued/)
 	+ [SpaceDock](https://spacedock.info/mod/1148)
 	+ [GitHub](https://github.com/linuxgurugamer/PartWizard)
-* [ozraven](https://forum.kerbalspaceprogram.com/index.php?/profile/106313-ozraven/): ROOT
-	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/72468-113-part-wizard-125-22-jun-2016/)
-	+ [CurseForge](https://kerbal.curseforge.com/projects/part-wizard)
-	+ [GitHub](https://github.com/ozraven/PartWizard)
